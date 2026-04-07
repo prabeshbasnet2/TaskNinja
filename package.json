@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://github.com/prabeshbasnet2/TaskNinja",
+"homepage": "https://prabeshbasnet2.github.io/TaskNinja/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
