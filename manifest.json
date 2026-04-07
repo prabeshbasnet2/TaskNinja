@@ -1,0 +1,15 @@
+{
+  "name": "TaskNinja",
+  "short_name": "TaskNinja",
+  "start_url": "/TaskNinja/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0d6efd",
+  "icons": [
+    {
+      "src": "taskninja.jpg",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
