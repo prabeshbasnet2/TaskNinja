@@ -10,6 +10,10 @@ function TodoInput({onAdd}){
         setText("");
     }
 
+    const handleKeyDown = (e) => {
+    if (e.key === "Enter") handleAdd();
+  };
+
     return (
     <div className="input-group mb-3">
     <input
@@ -17,7 +21,9 @@ function TodoInput({onAdd}){
         className="form-control"
         placeholder="Enter task"
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onKeyDown={handleKeyDown}
+        onChange={(e) => setText(e.target.value)
+        }
     />
     <button className="btn btn-primary" onClick={handleAdd}>
         Add

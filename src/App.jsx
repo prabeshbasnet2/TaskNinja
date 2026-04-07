@@ -5,28 +5,41 @@ import logo from "./assets/taskninja.jpg";
 
 function App() {
   const [todos, setTodos] = useState(() => {
-    const storedTodos = localStorage.getItem("todos");
-    return storedTodos ? JSON.parse(storedTodos) : [];
-  });
+  const storedTodos = localStorage.getItem("todos");
+  if (!storedTodos) return [];
+
+  return JSON.parse(storedTodos).map((todo) => ({
+    ...todo,
+    id: todo.id ?? Date.now() + Math.random(), // patch for old missing ids
+  }));
+});
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
   const addTodo = (text) => {
-    setTodos((prev) => [...prev, { text, completed: false }]);
+    setTodos((prev) => [...prev, { id: Date.now(), text, completed: false }]);
   };
 
-  const toggleTodo = (index) => {
+  const toggleTodo = (id) => {
     setTodos((prev) =>
-      prev.map((todo, i) =>
-        i === index ? { ...todo, completed: !todo.completed } : todo
+      prev.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
       )
     );
   };
 
-  const deleteTodo = (index) => {
-    setTodos((prev) => prev.filter((_, i) => i !== index));
+  const deleteTodo = (id) => {
+    setTodos((prev) => prev.filter((todo) => todo.id !== id));
+  };
+
+  const updateTodo = (id, newText) => {
+    setTodos((prev) =>
+      prev.map((todo) =>
+        todo.id === id ? { ...todo, text: newText } : todo
+      )
+    );
   };
 
   return (
@@ -35,7 +48,12 @@ function App() {
         <div className="col-md-6">
           <img src={logo} alt="Logo" className="img-fluid" />
           <TodoInput onAdd={addTodo} />
-          <TodoList todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} />
+          <TodoList
+            todos={todos}
+            onToggle={toggleTodo}
+            onDelete={deleteTodo}
+            onUpdate={updateTodo}
+          />
         </div>
       </div>
     </div>
@@ -43,39 +61,3 @@ function App() {
 }
 
 export default App;
-// import { useEffect, useState } from "react";
-// import Button from "./components/Button";
-
-
-// function App() {
-//   useEffect(() => {console.log("Component Mounted");})
-
-//   const[age, setAge] = useState(0);
-//   const[name, setName] = useState("");
-//   return (
-//     <div>
-//       <h1>Guess {name}'s age</h1>
-//       <h2>Hello {name}</h2>
-//       <div class="mb-5">
-//       <input type="text" placeholder="set name" value={name} onChange={(e) => setName(e.target.value)}/>
-//       <p>{age}</p>
-//       </div>
-
-//       <div class = "m-5">
-//       <input type="number" placeholder="input age" value={age} onChange={(e) => setAge(e.target.value)}/>
-//       <br />
-//       <Button label="Increase Age" onClick={() => setAge(age + 1)}></Button>
-//       <br />
-//       <Button label="Decrease Age" onClick={() => setAge(age - 1)}></Button>
-//       <br />
-//       <Button label="Reset Age!" onClick={() => setAge(age - age)}></Button>
-//       </div>
-
-//       <div class="m-5">
-//       {age == 28 ? <p class="text-danger">You guessed correctly </p> : <p class="text-success">Nope!</p>}
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default App;
